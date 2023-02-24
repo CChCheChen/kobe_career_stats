@@ -22,11 +22,14 @@ kb_reg_og = pd.read_csv("kobe_stats_reg.csv")
 kb_reg, years_reg, seasons_reg, stat_cats_reg = filter_data(kb_reg_og)
 # print(kb_reg)
 
-
 kb_po_og = pd.read_csv("kobe_stats_playoff.csv")
 kb_po, years_po, seasons_po, stat_cats_po = filter_data(kb_po_og)
 
 regular_playoff = ['Regular Season', 'Playoff']
+
+marks = {i: str(i) for i in range(int(kb_reg["Year"].min()), int(kb_reg["Year"].max()) + 1, 5)}
+marks[int(kb_reg["Year"].max())] = kb_reg["Year"].max()
+print(marks)
 
 external_stylesheets = [
     {
@@ -121,8 +124,11 @@ app.layout = html.Div(
                         ),
                         dcc.Slider(
                             id='xslider', 
-                            min=float(kb_reg["Year"].min()), 
-                            max=float(kb_reg["Year"].max()),
+                            min=int(kb_reg["Year"].min()), 
+                            max=int(kb_reg["Year"].max()),
+                            step=1,
+                            value=int(kb_reg["Year"].min()),
+                            marks=marks,
                             className="slidebar",
                         ),
                     ]

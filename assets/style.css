@@ -89,7 +89,22 @@ body {
     width: 60%;
     margin: 0 auto;
     display: block;
+    color: #542581;
 }
+
+.slidebar .rc-slider-rail {
+    background-color: #FDB927;
+}
+
+.slidebar .rc-slider-track {
+    background-color: #542581;
+}
+
+.slidebar .rc-slider-handle {
+    border-color: #FDB927;
+    box-shadow: none;
+}
+
 
 .Select-control {
     width: 256px;
@@ -108,12 +123,12 @@ body {
 .menu-title {
     margin-bottom: 6px;
     font-weight: bold;
-    color: #079A82;
+    color: #542581;
 }
 
 .menu-title-bar {
     margin-bottom: 6px;
     font-weight: bold;
-    color: #079A82;
+    color: #542581;
     text-align: center;
 }
