@@ -1,6 +1,21 @@
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
 
+def stats_mapping(stats):
+    stats_map = {
+        'G': 'Games played',
+        'FG': 'Field goal made per game',
+        'FGA': 'Field goal attampts per game',
+        'PTS': 'Points per game',
+        'TRB': 'Rebounds per game',
+        'AST': 'Assists per game',
+        'STL': 'Steals per game',
+        'BLK': 'Blocks per game',
+        'FG%': 'Field goal percentage'
+    }
+    return stats_map.get(stats)
+
+
 def filter_data(df_og):
     # Select the desired columns
     df = df_og[['Season', 'G', 'FG', 'FGA', 'TRB', 'AST', 'STL', 'BLK', 'PTS']]
@@ -175,8 +190,12 @@ def update_charts(regular_playoff, stats_type, end_season):
     else :
         data = kb_po
 
+    # data['Year'].apply(lambda x: int(str(x.strftime('%Y'))[:4]))
+
     end_season = pd.to_datetime(end_season, format="%Y")
     filtered_data = data.query("Year <= @end_season")
+
+    stats_type_full = stats_mapping(stats_type)
 
     pts_plot_figure = {
         "data": [
@@ -184,12 +203,12 @@ def update_charts(regular_playoff, stats_type, end_season):
                 "x": filtered_data["Season"],
                 "y": filtered_data[stats_type],
                 "type": "lines",
-                "hovertemplate": "%{y:.2f} Points Per Game<extra></extra>",
+                "hovertemplate": "%{y:.2f} <br><extra></extra>" + stats_type_full,
             },
         ],
         "layout": {
             "title": {
-                "text": "Points per game of each season",
+                "text": stats_type_full + " of each season",
                 "x": 0.05,
                 "xanchor": "left",
             },
