@@ -1,5 +1,5 @@
 import pandas as pd
-from dash import Dash, dcc, html
+from dash import Dash, dcc, html, Input, Output
 
 def filter_data(df_og):
     # Select the desired columns
@@ -10,7 +10,8 @@ def filter_data(df_og):
     df['Year'] = df['Season'].str[:4]
 
     df = df.iloc[:-1] # print(kb_reg)
-    df.assign(Year = lambda data: pd.to_datetime(data["Year"], format="%Y")).sort_values(by="Year")
+    df['Year'] = pd.to_datetime(df['Year'])
+    # df.assign(Year = lambda data: pd.to_datetime(data["Year"], format="%Y")).sort_values(by="Year")
 
     years = df["Year"].sort_values().unique()
     seasons = df["Season"].sort_values().unique() #print(seasons_reg)
@@ -27,9 +28,11 @@ kb_po, years_po, seasons_po, stat_cats_po = filter_data(kb_po_og)
 
 regular_playoff = ['Regular Season', 'Playoff']
 
-marks = {i: str(i) for i in range(int(kb_reg["Year"].min()), int(kb_reg["Year"].max()) + 1, 5)}
-marks[int(kb_reg["Year"].max())] = kb_reg["Year"].max()
-print(marks)
+first_season = str(kb_reg["Year"].min())[:4]
+last_season = str(kb_reg["Year"].max())[:4]
+
+marks = {i: str(i) for i in range(int(first_season), int(last_season), 5)}
+marks[int(last_season)] = last_season
 
 external_stylesheets = [
     {
@@ -97,7 +100,7 @@ app.layout = html.Div(
                     children=[
                         html.Div(children="Stats Type", className="menu-title"),
                         dcc.Dropdown(
-                            id="type-filter",
+                            id="stats-type-filter",
                             options=[
                                 {
                                     "label": sc,
@@ -123,11 +126,11 @@ app.layout = html.Div(
                             children="Season Range", className="menu-title-bar"
                         ),
                         dcc.Slider(
-                            id='xslider', 
-                            min=int(kb_reg["Year"].min()), 
-                            max=int(kb_reg["Year"].max()),
+                            id='season-range', 
+                            min=int(first_season), 
+                            max=int(last_season),
                             step=1,
-                            value=int(kb_reg["Year"].min()),
+                            value=int((int(last_season) + int(first_season)) / 2),
                             marks=marks,
                             className="slidebar",
                         ),
@@ -137,48 +140,85 @@ app.layout = html.Div(
             className="menu-bottom",
         ),
         html.Div(
-            className="row",
             children=[
                 html.Div(
-                    children=[
-                        dcc.Graph(
-                            figure={
-                                "data": [
-                                    {
-                                        "x": kb_reg["Season"],
-                                        "y": kb_reg["PTS"],
-                                        "type": "lines",
-                                    },
-                                ],
-                                "layout": {"title": "Points per game of each season"},
-                            },
-                            className="pts_plot",
-                        ),
-                    ],
-                    className="col col-sm-12 col-md-12 col-lg-6 col-xl-6",
+                    children=dcc.Graph(
+                        id="pts-plot",
+                        config={"displayModeBar": False},
+                    ),
+                    className="card",
                 ),
                 html.Div(
-                    children=[
-                        dcc.Graph(
-                            figure={
-                                "data": [
-                                    {
-                                        "x": kb_reg["Season"],
-                                        "y": kb_reg["G"],
-                                        "type": "lines",
-                                    },
-                                ],
-                                "layout": {"title": "Game played of each season"},
-                            },
-                            className="g_plot",
-                        ),
-                    ],
-                    className="col col-sm-12 col-md-12 col-lg-6 col-xl-6",
+                    children=dcc.Graph(
+                        id="g-plot",
+                        config={"displayModeBar": False},
+                    ),
+                    className="card",
                 ),
             ],
+            className="wrapper",
         ),
     ]
 )
+
+@app.callback(
+    Output("pts-plot", "figure"), # points per game plot
+    Output("g-plot", "figure"), # games played plot
+    Input("regular-playoff-filter", "value"),
+    Input("stats-type-filter", "value"),
+    [Input("season-range", "value")],
+)
+def update_charts(regular_playoff, stats_type, end_season):
+    
+    if(regular_playoff == 'Regular Season') :
+        data = kb_reg
+    else :
+        data = kb_po
+
+    end_season = pd.to_datetime(end_season, format="%Y")
+    filtered_data = data.query("Year <= @end_season")
+
+    pts_plot_figure = {
+        "data": [
+            {
+                "x": filtered_data["Season"],
+                "y": filtered_data[stats_type],
+                "type": "lines",
+                "hovertemplate": "%{y:.2f} Points Per Game<extra></extra>",
+            },
+        ],
+        "layout": {
+            "title": {
+                "text": "Points per game of each season",
+                "x": 0.05,
+                "xanchor": "left",
+            },
+            "xaxis": {"fixedrange": True},
+            "yaxis": {"fixedrange": True},
+            "colorway": ["#542581"],
+        },
+    }
+
+    g_plot_figure = {
+        "data": [
+            {
+                "x": filtered_data["Season"],
+                "y": filtered_data["G"],
+                "type": "lines",
+                "hovertemplate": "%{y:.2f} Games played<extra></extra>"
+            },
+        ],
+        "layout": {
+            "title": {
+                "text": "Game played of each season", 
+                "x": 0.05, 
+                "xanchor": "left"},
+            "xaxis": {"fixedrange": True},
+            "yaxis": {"fixedrange": True},
+            "colorway": ["#FDB927"],
+        },
+    }
+    return pts_plot_figure, g_plot_figure
 
 if __name__ == "__main__":
     app.run_server(debug=True)
