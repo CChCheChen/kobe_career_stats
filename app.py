@@ -214,8 +214,8 @@ def update_charts(regular_playoff, stats_type, end_season):
                 "x": 0.05,
                 "xanchor": "left",
             },
-            "xaxis": {"fixedrange": False},
-            "yaxis": {"fixedrange": False},
+            # "xaxis": {"fixedrange": False},
+            # "yaxis": {"fixedrange": False},
             "colorway": ["#542581"],
         },
     }
