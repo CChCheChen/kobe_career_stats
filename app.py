@@ -195,12 +195,14 @@ def update_charts(regular_playoff, stats_type, end_season):
     end_season = pd.to_datetime(end_season, format="%Y")
     filtered_data = data.query("Year <= @end_season")
 
+    print(filtered_data)
+
     stats_type_full = stats_mapping(stats_type)
 
     pts_plot_figure = {
         "data": [
             {
-                "x": filtered_data["Season"],
+                "x": filtered_data["Year"],
                 "y": filtered_data[stats_type],
                 "type": "lines",
                 "hovertemplate": "%{y:.2f} <br><extra></extra>" + stats_type_full,
@@ -212,8 +214,8 @@ def update_charts(regular_playoff, stats_type, end_season):
                 "x": 0.05,
                 "xanchor": "left",
             },
-            "xaxis": {"fixedrange": True},
-            "yaxis": {"fixedrange": True},
+            "xaxis": {"fixedrange": False},
+            "yaxis": {"fixedrange": False},
             "colorway": ["#542581"],
         },
     }
@@ -221,7 +223,7 @@ def update_charts(regular_playoff, stats_type, end_season):
     g_plot_figure = {
         "data": [
             {
-                "x": filtered_data["Season"],
+                "x": filtered_data["Year"],
                 "y": filtered_data["G"],
                 "type": "lines",
                 "hovertemplate": "%{y:.2f} Games played<extra></extra>"
@@ -232,8 +234,8 @@ def update_charts(regular_playoff, stats_type, end_season):
                 "text": "Game played of each season", 
                 "x": 0.05, 
                 "xanchor": "left"},
-            "xaxis": {"fixedrange": True},
-            "yaxis": {"fixedrange": True},
+            # "xaxis": {"fixedrange": True},
+            # "yaxis": {"fixedrange": True},
             "colorway": ["#FDB927"],
         },
     }
