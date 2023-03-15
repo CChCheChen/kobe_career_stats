@@ -34,11 +34,11 @@ def filter_data(df_og):
 
     return df, years, seasons, stat_cats
 
-kb_reg_og = pd.read_csv("kobe_stats_reg.csv")
+kb_reg_og = pd.read_csv("assets/data/kobe_stats_reg.csv")
 kb_reg, years_reg, seasons_reg, stat_cats_reg = filter_data(kb_reg_og)
 # print(kb_reg)
 
-kb_po_og = pd.read_csv("kobe_stats_playoff.csv")
+kb_po_og = pd.read_csv("assets/data/kobe_stats_playoff.csv")
 kb_po, years_po, seasons_po, stat_cats_po = filter_data(kb_po_og)
 
 regular_playoff = ['Regular Season', 'Playoff']
@@ -195,7 +195,7 @@ def update_charts(regular_playoff, stats_type, end_season):
     end_season = pd.to_datetime(end_season, format="%Y")
     filtered_data = data.query("Year <= @end_season")
 
-    print(filtered_data)
+    # print(filtered_data)
 
     stats_type_full = stats_mapping(stats_type)
 
