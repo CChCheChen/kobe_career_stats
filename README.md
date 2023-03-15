@@ -94,12 +94,12 @@ Licensed under the terms of the [MIT license](LICENSE).
 
 The data used to visualize is extracted from [Kobe Bryant's Stats](https://www.basketball-reference.com/players/b/bryanko01.html) from Basketball Reference. There are 20 years playing stats in this data set for `Regular Season` and `Playoff`. The useful data columns used for the application are listed below:
 
-'G': 'Games played',
-'FG': 'Field goal made per game',
-'FGA': 'Field goal attampts per game',
-'PTS': 'Points per game',
-'TRB': 'Rebounds per game',
-'AST': 'Assists per game',
-'STL': 'Steals per game',
-'BLK': 'Blocks per game',
-'FG%': 'Field goal percentage'
+- 'G': 'Games played',
+- 'FG': 'Field goal made per game',
+- 'FGA': 'Field goal attampts per game',
+- 'PTS': 'Points per game',
+- 'TRB': 'Rebounds per game',
+- 'AST': 'Assists per game',
+- 'STL': 'Steals per game',
+- 'BLK': 'Blocks per game',
+- 'FG%': 'Field goal percentage'
