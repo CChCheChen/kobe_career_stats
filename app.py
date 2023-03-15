@@ -118,7 +118,7 @@ app.layout = html.Div(
                             id="stats-type-filter",
                             options=[
                                 {
-                                    "label": sc,
+                                    "label": stats_mapping(sc),
                                     "value": sc,
                                 }
                                 for sc in stat_cats_reg
