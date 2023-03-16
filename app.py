@@ -85,7 +85,7 @@ app.layout = html.Div(
                 html.P(
                     children=[
                         html.Span("Analyze Kobe Bryant's Career Game Stats from different seasons", className="header-text",),
-                        html.Span("(Data available from 1996-97 to 2015-16 NBA regular seasons)", className="header-text",)
+                        html.Span("(Data available from 1996-97 to 2015-16 NBA seasons)", className="header-text",)
                     ],
                     className="header-description",
                 ),
