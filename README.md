@@ -9,7 +9,7 @@ Kobe fans!!!!!!!! Lakers fans!!!!!!!!
 
 This is the application you can view Kobe Bryant's career stats over his regular seasons and playoffs.
 
-More details can be found in the proposal [here](https://github.com/UBC-MDS/nba_player_stat/blob/main/PROPOSAL.md).
+More details about other players and a more completed project can be found in the proposal [here](https://github.com/UBC-MDS/nba_player_stat/blob/main/PROPOSAL.md).
 
 This document provides the basic information about this Kobe Bryant Careet Stats APP project. Please feel free to navigate each section by the list below: 
 
